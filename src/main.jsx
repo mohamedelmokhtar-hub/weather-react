@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const theme = createTheme({
   typography: {
-    fontFamily: ["IBM"],
+    fontFamily: ["IBM Plex Sans Arabic", "sans-serif"].join(","),
   },
 });
 
