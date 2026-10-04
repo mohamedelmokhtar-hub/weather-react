@@ -1,7 +1,20 @@
 import { Button, Container, Typography } from "@mui/material";
 import CloudIcon from "@mui/icons-material/Cloud";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
 function App() {
+  const [temp, setemp] = useState();
+  useEffect(() => {
+    axios
+      .get(
+        "https://api.openweathermap.org/data/2.5/weather?lat=35.6&lon=-0.6&appid=074eec0b5bd92e07371a5a424298b0fe",
+      )
+      .then(function (res) {
+        const tempoTemp = Math.round(res.data.main.temp - 272.15);
+        setemp(tempoTemp);
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <>
       <Container maxWidth="sm">
@@ -59,7 +72,7 @@ function App() {
                       variant="h1"
                       sx={{ textAlign: "right", color: "inherit" }}
                     >
-                      38
+                      {temp}
                     </Typography>
                     {/* TODO:TEMP IMAGE */}
                   </div>
