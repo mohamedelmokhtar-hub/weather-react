@@ -5,15 +5,20 @@ import axios from "axios";
 function App() {
   const [temp, setemp] = useState();
   useEffect(() => {
+    const controller = new AbortController();
     axios
       .get(
         "https://api.openweathermap.org/data/2.5/weather?lat=35.6&lon=-0.6&appid=074eec0b5bd92e07371a5a424298b0fe",
+        { signal: controller.signal },
       )
       .then(function (res) {
         const tempoTemp = Math.round(res.data.main.temp - 272.15);
         setemp(tempoTemp);
       })
       .catch((err) => console.log(err));
+    return () => {
+      controller.abort();
+    };
   }, []);
   return (
     <>
