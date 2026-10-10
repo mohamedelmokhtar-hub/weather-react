@@ -3,7 +3,13 @@ import CloudIcon from "@mui/icons-material/Cloud";
 import { useEffect, useState } from "react";
 import axios from "axios";
 function App() {
-  const [temp, setemp] = useState();
+  const [temp, setemp] = useState({
+    number: null,
+    max: null,
+    min: null,
+    description: "",
+    icon: null,
+  });
   useEffect(() => {
     const controller = new AbortController();
     axios
@@ -13,7 +19,16 @@ function App() {
       )
       .then(function (res) {
         const tempoTemp = Math.round(res.data.main.temp - 272.15);
-        setemp(tempoTemp);
+        const { temp_min, temp_max } = res.data.main;
+        const descriptionRes = res.data.weather[0].description;
+        const iconRes = res.data.weather[0].icon;
+        setemp({
+          number: tempoTemp,
+          min: Math.round(temp_min - 272.15),
+          max: Math.round(temp_max - 272.15),
+          description: descriptionRes,
+          icon: `https://openweathermap.org/img/wn/${iconRes}@2x.png`,
+        });
       })
       .catch((err) => console.log(err));
     return () => {
@@ -72,23 +87,25 @@ function App() {
               >
                 <div>
                   {/* TEMP */}
-                  <div>
+                  <div
+                    style={{ display: "flex", flexDirection: "row-reverse" }}
+                  >
                     <Typography
                       variant="h1"
                       sx={{ textAlign: "right", color: "inherit" }}
                     >
-                      {temp}
+                      {temp.number}
                     </Typography>
-                    {/* TODO:TEMP IMAGE */}
+                    <img src={temp.icon} alt={temp.description} />
                   </div>
-                  <Typography variant="h6">Broken clouds</Typography>
+                  <Typography variant="h6">{temp.description}</Typography>
                   {/* MIN AND  MAX */}
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <h5> الصغرى:34</h5>
+                    <h5> الصغرى:{temp.min}</h5>
                     <h5>|</h5>
-                    <h5>الكبرى:34</h5>
+                    <h5>الكبرى:{temp.max}</h5>
                   </div>
                 </div>
                 <CloudIcon style={{ fontSize: "200px" }}></CloudIcon>
