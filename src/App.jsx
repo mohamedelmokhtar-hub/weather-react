@@ -2,7 +2,12 @@ import { Button, Container, Typography } from "@mui/material";
 import CloudIcon from "@mui/icons-material/Cloud";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import moment from "moment/min/moment-with-locales";
+
+moment.locale("ar-dz");
 function App() {
+  const [datetime, setdatetime] = useState("");
+  console.log(datetime);
   const [temp, setemp] = useState({
     number: null,
     max: null,
@@ -11,6 +16,7 @@ function App() {
     icon: null,
   });
   useEffect(() => {
+    setdatetime(moment().format("MMMM Do YYYY,h:mm:ss a"));
     const controller = new AbortController();
     axios
       .get(
@@ -73,7 +79,7 @@ function App() {
                   الجزائر{" "}
                 </Typography>
                 <Typography variant="h5" sx={{ paddingX: 2 }}>
-                  الاربعاء 30-09-2026
+                  {datetime}
                 </Typography>
               </div>
               <hr />
