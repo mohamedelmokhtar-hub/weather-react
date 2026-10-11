@@ -6,7 +6,7 @@ import moment from "moment/min/moment-with-locales";
 
 moment.locale("ar-dz");
 function App() {
-  const [datetime, setdatetime] = useState("");
+  const datetime = moment().format("MMMM Do YYYY, h:mm:ss a");
   console.log(datetime);
   const [temp, setemp] = useState({
     number: null,
@@ -16,7 +16,6 @@ function App() {
     icon: null,
   });
   useEffect(() => {
-    setdatetime(moment().format("MMMM Do YYYY,h:mm:ss a"));
     const controller = new AbortController();
     axios
       .get(
