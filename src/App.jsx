@@ -147,6 +147,7 @@ function App() {
             </div>
           </div>
           <div
+            dir="ltr"
             style={{
               display: "flex",
               justifyContent: "start",
