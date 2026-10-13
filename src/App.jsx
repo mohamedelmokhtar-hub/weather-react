@@ -3,9 +3,11 @@ import CloudIcon from "@mui/icons-material/Cloud";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import moment from "moment/min/moment-with-locales";
+import { useTranslation } from "react-i18next";
 
 moment.locale("ar-dz");
 function App() {
+  const { t, i18n } = useTranslation();
   const datetime = moment().format("MMMM Do YYYY, h:mm:ss a");
   console.log(datetime);
   const [temp, setemp] = useState({
@@ -16,6 +18,7 @@ function App() {
     icon: null,
   });
   useEffect(() => {
+    i18n.changeLanguage("ar");
     const controller = new AbortController();
     axios
       .get(
@@ -75,7 +78,7 @@ function App() {
                 }}
               >
                 <Typography variant="h2" sx={{ color: "inherit" }}>
-                  الجزائر{" "}
+                  {t("الجزائر")}{" "}
                 </Typography>
                 <Typography variant="h5" sx={{ paddingX: 2 }}>
                   {datetime}
