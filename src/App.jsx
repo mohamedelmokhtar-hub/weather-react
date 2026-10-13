@@ -2,14 +2,25 @@ import { Button, Container, Typography } from "@mui/material";
 import CloudIcon from "@mui/icons-material/Cloud";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import moment from "moment/min/moment-with-locales";
 import { useTranslation } from "react-i18next";
-
-moment.locale("ar-dz");
+import moment from "moment/min/moment-with-locales";
+moment().locale("ar-dz");
 function App() {
+  // const [now, setNow] = useState(() => Date.now());
+
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setNow(Date.now());
+  //   }, 1000);
+
+  //   return () => clearInterval(timer);
+  // }, []);
   const { t, i18n } = useTranslation();
-  const datetime = moment().format("MMMM Do YYYY, h:mm:ss a");
-  console.log(datetime);
+  const [locale, setLocale] = useState("en");
+
+  const datetime = moment()
+    .locale(locale === "ar" ? "ar-dz" : "en")
+    .format("MMMM Do YYYY, h:mm:ss a");
   const [temp, setemp] = useState({
     number: null,
     max: null,
@@ -17,8 +28,17 @@ function App() {
     description: "",
     icon: null,
   });
+  const handleTrans = () => {
+    if (locale === "ar") {
+      setLocale("en");
+    } else {
+      setLocale("ar");
+    }
+  };
   useEffect(() => {
-    i18n.changeLanguage("ar");
+    i18n.changeLanguage(locale);
+  }, [locale, i18n]);
+  useEffect(() => {
     const controller = new AbortController();
     axios
       .get(
@@ -47,6 +67,7 @@ function App() {
     <>
       <Container maxWidth="sm">
         <div
+          dir={locale === "ar" ? "rtl" : "ltr"}
           style={{
             height: "100vh",
             display: "flex",
@@ -78,7 +99,7 @@ function App() {
                 }}
               >
                 <Typography variant="h2" sx={{ color: "inherit" }}>
-                  {t("الجزائر")}{" "}
+                  {t("Algeria")}{" "}
                 </Typography>
                 <Typography variant="h5" sx={{ paddingX: 2 }}>
                   {datetime}
@@ -111,9 +132,14 @@ function App() {
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <h5> الصغرى:{temp.min}</h5>
+                    <h5>
+                      {" "}
+                      {t("min")}:{temp.min}
+                    </h5>
                     <h5>|</h5>
-                    <h5>الكبرى:{temp.max}</h5>
+                    <h5>
+                      {t("max")}:{temp.max}
+                    </h5>
                   </div>
                 </div>
                 <CloudIcon style={{ fontSize: "200px" }}></CloudIcon>
@@ -128,8 +154,12 @@ function App() {
               marginTop: "20px",
             }}
           >
-            <Button sx={{ color: "white" }} variant="text">
-              إنجليزي
+            <Button
+              onClick={handleTrans}
+              sx={{ color: "white" }}
+              variant="text"
+            >
+              {locale === "ar" ? "إنجليزي" : "Arabic"}
             </Button>
           </div>
         </div>

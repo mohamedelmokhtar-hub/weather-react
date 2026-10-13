@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import './I18n'
+import "./I18n";
 const theme = createTheme({
   typography: {
     fontFamily: ["IBM Plex Sans Arabic", "sans-serif"].join(","),
